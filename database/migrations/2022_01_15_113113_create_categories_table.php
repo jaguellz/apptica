@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTopCategoriesTable extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateTopCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('top_categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('date');
+            $table->foreignId('top_category_id')->constrained();
+            $table->unsignedInteger('category');
+            $table->unsignedInteger('position');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateTopCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('top_categories');
+        Schema::dropIfExists('categories');
     }
 }

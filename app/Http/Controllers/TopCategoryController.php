@@ -17,14 +17,10 @@ class TopCategoryController extends Controller
         ]);
         $date = $request->date;
         $date = Carbon::make($date)->format('Y-m-d');
-        $appId = 1421444;
-        $countryId = 1;
-        $url = TopCategory::create([
+        $topCategory = TopCategory::create([
             'date' => $date,
-            'appId' => $appId,
-            'countryId' => $countryId
         ]);
-        $url = $url->getUrl();
+        $url = $topCategory->getUrl();
         $response = Http::get($url);
         if ($response['status_code'] != 200) return new Response($response->json(), $response['status_code']);
         $data = [];
@@ -36,6 +32,10 @@ class TopCategoryController extends Controller
                 if ($underCategory[$date] < $max) $max = $underCategory[$date];
             }
             $data[$key] = $max;
+            $topCategory->categories()->create([
+                'category' => $key,
+                'position' => $max
+            ]);
         }
         return new Response(['status_code' => 200, 'message' => 'ok','data' => $data]);
     }
