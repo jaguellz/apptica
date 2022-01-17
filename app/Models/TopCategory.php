@@ -20,4 +20,13 @@ class TopCategory extends Model
     {
         return $this->hasMany(Category::class);
     }
+    public function getData()
+    {
+        $categories = $this->categories()->select('category', 'position')->get();
+        foreach ($categories as $category)
+        {
+            $data[$category->category] = $category->position;
+        }
+        return $data;
+    }
 }

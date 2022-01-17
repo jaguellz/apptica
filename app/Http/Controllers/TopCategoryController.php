@@ -17,9 +17,18 @@ class TopCategoryController extends Controller
         ]);
         $date = $request->date;
         $date = Carbon::make($date)->format('Y-m-d');
-        $topCategory = TopCategory::create([
-            'date' => $date,
-        ]);
+        if (TopCategory::where('date', $date)->exists())
+        {
+            $topCategory = TopCategory::where('date', $date)->first();
+            $data = $topCategory->getData();
+            return new Response(['status_code' => 200, 'message' => 'ok','data' => $data]);
+        }
+        else
+        {
+            $topCategory = TopCategory::create([
+                'date' => $date,
+            ]);
+        }
         $url = $topCategory->getUrl();
         $response = Http::get($url);
         if ($response['status_code'] != 200) return new Response($response->json(), $response['status_code']);
