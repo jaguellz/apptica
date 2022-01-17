@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::/*middleware('throttle:5,1')->*/get('/appTopCategory', 'App\Http\Controllers\TopCategoryController@TopCategory');
+Route::middleware('throttle:5,1')->get('/appTopCategory', 'App\Http\Controllers\TopCategoryController@TopCategory');
